@@ -1,4 +1,4 @@
-package com.hello.post;
+package com.hello.post.entitytest;
 
 import com.hello.post.entity.Comment;
 import com.hello.post.entity.Like;

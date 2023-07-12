@@ -1,4 +1,4 @@
-package com.hello.post;
+package com.hello.post.entitytest;
 
 import com.hello.post.entity.Comment;
 import com.hello.post.entity.Post;
@@ -38,7 +38,5 @@ public class EntityFindTest {
         Comment comment = commentRepository.findById(1L).orElse(null);
         Post post1 = comment.getPost();
         System.out.println(post1.getTitle());
-
-
     }
 }
