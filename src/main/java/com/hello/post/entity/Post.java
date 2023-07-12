@@ -14,6 +14,7 @@ public class Post extends Timestamped{
     private String content;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "likes")
     private Like like;
 
     //단방향
