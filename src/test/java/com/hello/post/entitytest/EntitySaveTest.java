@@ -5,6 +5,7 @@ import com.hello.post.entity.Like;
 import com.hello.post.entity.Post;
 import com.hello.post.entity.User;
 import com.hello.post.repository.CommentRepository;
+import com.hello.post.repository.LikeRepository;
 import com.hello.post.repository.PostRepository;
 import com.hello.post.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -15,12 +16,18 @@ import org.springframework.test.annotation.Rollback;
 @SpringBootTest
 public class EntitySaveTest {
 
-    @Autowired
     UserRepository userRepository;
-    @Autowired
     PostRepository postRepository;
-    @Autowired
     CommentRepository commentRepository;
+    LikeRepository likeRepository;
+
+    @Autowired
+    public EntitySaveTest(UserRepository userRepository, PostRepository postRepository, CommentRepository commentRepository, LikeRepository likeRepository) {
+        this.userRepository = userRepository;
+        this.postRepository = postRepository;
+        this.commentRepository = commentRepository;
+        this.likeRepository = likeRepository;
+    }
 
     @Test
     @Rollback(value = false)
@@ -35,7 +42,6 @@ public class EntitySaveTest {
         Post post = new Post();
         post.setTitle("오늘의 할일");
         post.setContent("개인과제를 해야 합니다.");
-        post.setLike(Like.On);
         post.setUser(user);
         postRepository.save(post);
 
@@ -45,5 +51,12 @@ public class EntitySaveTest {
         comment.setUser(user);
         comment.setPost(post);
         commentRepository.save(comment);
+
+        //좋아요 저장
+        Like like = new Like();
+        like.setLike(1);
+        like.setUser(user);
+        like.setPost(post);
+        likeRepository.save(like);
     }
 }
