@@ -76,9 +76,9 @@ public class WebSecurityConfig {
                         //로그인 처리
                         .loginProcessingUrl("/post/user/login")
                         //로그인 처리 후 성공 시 URL
-                        .defaultSuccessUrl("/")
+                        .defaultSuccessUrl("/post/user/login/success")
                         //로그인 처리 후 실패 시 URL
-                        .failureUrl("/post/user/login-page")
+                        .failureUrl("/post/user/login/fail")
                         .permitAll()
         );
 
