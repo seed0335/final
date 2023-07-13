@@ -1,4 +1,4 @@
-package com.hello.post.dto;
+package com.hello.post.dto.user;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

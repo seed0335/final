@@ -1,7 +1,5 @@
 package com.hello.post.jwt;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hello.post.dto.LoginRequestDto;
 import com.hello.post.security.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

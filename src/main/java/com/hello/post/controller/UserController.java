@@ -1,6 +1,6 @@
 package com.hello.post.controller;
 
-import com.hello.post.dto.SignupDto;
+import com.hello.post.dto.user.SignupDto;
 import com.hello.post.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

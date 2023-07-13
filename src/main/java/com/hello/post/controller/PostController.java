@@ -2,6 +2,7 @@ package com.hello.post.controller;
 
 import com.hello.post.dto.PostRequestDto;
 import com.hello.post.dto.PostResponseDto;
+import com.hello.post.dto.post3.ResponseDto;
 import com.hello.post.entity.User;
 import com.hello.post.security.UserDetailsImpl;
 import com.hello.post.service.PostService;
@@ -14,9 +15,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/post")
 public class PostController {
 
@@ -30,8 +33,10 @@ public class PostController {
     
     // 전체 게시글 목록 조회
     @GetMapping
-    public String findAllPost(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
-        return "ok";
+    public List<ResponseDto> findAllPost() {
+        log.info("전체 게시글 목록 조회");
+        List<ResponseDto> allPost = postService.findAllPost();
+        return allPost;
     }
 
     // 게시글 등록

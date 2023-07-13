@@ -2,6 +2,7 @@ package com.hello.post.service;
 
 import com.hello.post.dto.PostRequestDto;
 import com.hello.post.dto.PostResponseDto;
+import com.hello.post.dto.post3.ResponseDto;
 import com.hello.post.entity.Post;
 import com.hello.post.entity.User;
 import com.hello.post.repository.PostRepository;
@@ -10,6 +11,9 @@ import com.hello.post.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class PostService {
@@ -17,6 +21,19 @@ public class PostService {
     private final UserRepository userRepository;
 
     private final PostRepository postRepository;
+
+    // 요구사항 3번 : 전체 게시글 목록 조회 API
+    public List<ResponseDto> findAllPost() {
+        List<Post> postList = postRepository.findAllByOrderByCreatedAtDesc();
+        List<ResponseDto> responseDtoList = new ArrayList<>();
+
+        for (Post post : postList) {
+            responseDtoList.add(new ResponseDto(post));
+        }
+
+        return responseDtoList;
+
+    }
     public PostResponseDto createPost(UserDetailsImpl userDetails, PostRequestDto postRequestDto) {
         String username = userDetails.getUsername();
         User user = userRepository.findByUsername(username).orElse(null);
@@ -30,4 +47,6 @@ public class PostService {
         PostResponseDto postResponseDto = new PostResponseDto(post);
         return postResponseDto;
     }
+
+
 }

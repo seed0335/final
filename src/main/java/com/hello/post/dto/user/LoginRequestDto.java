@@ -1,4 +1,4 @@
-package com.hello.post.dto;
+package com.hello.post.dto.user;
 
 import lombok.Getter;
 import lombok.Setter;
