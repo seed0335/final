@@ -8,12 +8,12 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * 1.인증설정
@@ -74,13 +74,17 @@ public class WebSecurityConfig {
                         //로그인 View 제공
                         .loginPage("/post/user/login-page")
                         //로그인 처리
-                        .loginProcessingUrl("post/user/login")
+                        .loginProcessingUrl("/post/user/login")
                         //로그인 처리 후 성공 시 URL
                         .defaultSuccessUrl("/")
                         //로그인 처리 후 실패 시 URL
-                        .failureUrl("api/user/login-page")
+                        .failureUrl("/post/user/login-page")
                         .permitAll()
         );
+
+        // 필터 관리
+        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

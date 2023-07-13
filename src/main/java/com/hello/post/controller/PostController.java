@@ -1,13 +1,23 @@
 package com.hello.post.controller;
 
+import com.hello.post.dto.PostRequestDto;
+import com.hello.post.dto.PostResponseDto;
 import com.hello.post.entity.User;
 import com.hello.post.security.UserDetailsImpl;
+import com.hello.post.service.PostService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
+@Slf4j
+@RequiredArgsConstructor
 @Controller
+@RequestMapping("/post")
 public class PostController {
 
     /**
@@ -15,13 +25,21 @@ public class PostController {
      * Authentication -> getPrincipal() -> UserDetails -> user
      */
 
-    @GetMapping("/post")
+    
+    private final PostService postService;
+    
+    // 전체 게시글 목록 조회
+    @GetMapping
     public String findAllPost(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
-        User user = userDetails.getUser();
-        System.out.println(user.getUsername());
-        System.out.println(user.getPassword());
+        return "ok";
+    }
 
-        model.addAttribute("username", user.getUsername());
-        return "index";
+    // 게시글 등록
+    @ResponseBody
+    @PostMapping
+    public ResponseEntity<PostResponseDto> createPost(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody PostRequestDto postRequestDto) {
+        log.info("postRequestDto={}", postRequestDto);
+        PostResponseDto post = postService.createPost(userDetails, postRequestDto);
+        return new ResponseEntity<>(post, HttpStatus.OK);
     }
 }
