@@ -1,5 +1,7 @@
 package com.hello.post.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hello.post.dto.user.LoginRequestDto;
 import com.hello.post.security.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,13 +29,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         log.info("로그인 시도");
         try {
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
+            LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);
 
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            username,
-                            password
+                            requestDto.getUsername(),
+                            requestDto.getPassword(),
+                            null
                     )
             );
         } catch (Exception e) {

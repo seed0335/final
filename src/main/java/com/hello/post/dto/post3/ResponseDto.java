@@ -15,11 +15,13 @@ public class ResponseDto {
 
     private String content;
     private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 
     public ResponseDto(Post post) {
         this.username = post.getUser().getUsername();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.createdAt = post.getCreatedAt();
+        this.modifiedAt = post.getModifiedAt();
     }
 }

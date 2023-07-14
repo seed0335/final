@@ -34,6 +34,8 @@ public class PostService {
         return responseDtoList;
 
     }
+
+    // 요구사항 4번 : 게시글 작성
     public PostResponseDto createPost(UserDetailsImpl userDetails, PostRequestDto postRequestDto) {
         String username = userDetails.getUsername();
         User user = userRepository.findByUsername(username).orElse(null);
@@ -47,6 +49,45 @@ public class PostService {
         PostResponseDto postResponseDto = new PostResponseDto(post);
         return postResponseDto;
     }
+
+    // 요구사항 5번 : 선택한 게시글 조회 API
+    public ResponseDto findByPost(Long postNumber) {
+        Post post = postRepository.findById(postNumber).orElse(null);
+
+        ResponseDto responseDto = new ResponseDto(post);
+        return responseDto;
+    }
+
+    //요구사항 6번 : 선택한 게시글 수정 API
+    public ResponseDto updatePost(UserDetailsImpl userDetails, Long postNumber, PostRequestDto postRequestDto) {
+        String username = userDetails.getUser().getUsername();
+        Post post = postRepository.findById(postNumber).orElse(null);
+        String findPostUserName = post.getUser().getUsername();
+
+        if(username.equals(findPostUserName)) {
+            post.setTitle(postRequestDto.getTitle());
+            post.setContent(postRequestDto.getContent());
+            postRepository.save(post);
+            return new ResponseDto(post);
+        }
+        return null;
+    }
+
+    // 7. 선택한 게시글 삭제 API
+    public String deletePost(UserDetailsImpl userDetails, Long postNumber) {
+        String username = userDetails.getUser().getUsername();
+        Post post = postRepository.findById(postNumber).orElse(null);
+        String findPostUserName = post.getUser().getUsername();
+
+        if(username.equals(findPostUserName)) {
+            postRepository.delete(post);
+            return "삭제가 완료 되었습니다.";
+        }
+
+        return "삭제 권한이 없습니다.";
+    }
+
+
 
 
 }

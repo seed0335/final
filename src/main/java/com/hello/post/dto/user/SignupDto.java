@@ -14,12 +14,12 @@ public class SignupDto {
 
     @NotBlank
     @Size(min=4, max=8)
-    @Pattern(regexp = "^[A-Za-z0-9]$")
+    @Pattern(regexp = "^[A-Za-z0-9]+$")
     private String username;
 
     @NotBlank
     @Size(min=8, max=15)
-    @Pattern(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]$")
+    @Pattern(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+$")
     private String password;
 
 }

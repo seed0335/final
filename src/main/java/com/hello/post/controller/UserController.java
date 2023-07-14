@@ -5,12 +5,15 @@ import com.hello.post.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/post/user")
 public class UserController {
 
@@ -21,29 +24,26 @@ public class UserController {
         this.userService = userService;
     }
 
-    // 회원가입 이동
-    @GetMapping("/signup")
-    public String home() {
-        return "signup";
-    }
 
+    //회원가입
     @PostMapping("/signup")
-    public String signup(@ModelAttribute @Valid SignupDto signupDto, BindingResult bindingResult) {
+    public ResponseEntity<String> signup(@RequestBody @Valid SignupDto signupDto, BindingResult bindingResult) {
         log.info("signup={}", signupDto);
 
         if(bindingResult.hasErrors()) {
             log.info("bindingResult={}", bindingResult);
-            return "signup";
+            return new ResponseEntity<>("회원가입 형식에 맞지 않습니다.", HttpStatus.BAD_REQUEST);
         }
 
         try {
             userService.signup(signupDto);
         } catch (Exception e) {
             e.printStackTrace();
-            return "signup";
+            return new ResponseEntity<>("중복된 아이디입니다.", HttpStatus.BAD_REQUEST);
+
         }
 
-        return "login";
+        return new ResponseEntity<>("회원가입 성공", HttpStatus.OK);
     }
 
     @GetMapping("/login-page")

@@ -31,7 +31,7 @@ public class PostController {
     
     private final PostService postService;
     
-    // 전체 게시글 목록 조회
+    // 요구사항 3번 : 전체 게시글 목록 조회
     @GetMapping
     public List<ResponseDto> findAllPost() {
         log.info("전체 게시글 목록 조회");
@@ -39,12 +39,34 @@ public class PostController {
         return allPost;
     }
 
-    // 게시글 등록
-    @ResponseBody
+    // 요구사항 4번 :게시글 작성
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody PostRequestDto postRequestDto) {
         log.info("postRequestDto={}", postRequestDto);
         PostResponseDto post = postService.createPost(userDetails, postRequestDto);
         return new ResponseEntity<>(post, HttpStatus.OK);
+    }
+
+    // 요구사항 5번 선택한 게시글 조회
+    @GetMapping("/{postNumber}")
+    public ResponseEntity<ResponseDto> findByPost(@PathVariable Long postNumber) {
+        ResponseDto findPost = postService.findByPost(postNumber);
+        return new ResponseEntity<>(findPost, HttpStatus.OK);
+    }
+
+    //요구사항 6번 : 선택한 게시글 수정 API
+    @PostMapping("/{postNumber}")
+    public ResponseEntity<ResponseDto> updatePost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postNumber, @RequestBody PostRequestDto postRequestDto) {
+        log.info("userDetails={}", userDetails.getUsername());
+        ResponseDto updatePost = postService.updatePost(userDetails, postNumber, postRequestDto);
+
+        return new ResponseEntity<>(updatePost, HttpStatus.OK);
+    }
+
+    // 7. 선택한 게시글 삭제 API
+    @DeleteMapping("/{postNumber}")
+    public ResponseEntity<String> deletePost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postNumber) {
+        String message = postService.deletePost(userDetails, postNumber);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
