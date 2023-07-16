@@ -2,8 +2,11 @@ package com.hello.post.service;
 
 import com.hello.post.dto.comment.CommentRequestDto;
 import com.hello.post.dto.comment.CommentResponseDto;
+import com.hello.post.dto.like.CommentLikeRequestDto;
 import com.hello.post.entity.Comment;
+import com.hello.post.entity.CommentLike;
 import com.hello.post.entity.Post;
+import com.hello.post.repository.CommentLikeRepository;
 import com.hello.post.repository.CommentRepository;
 import com.hello.post.repository.PostRepository;
 import com.hello.post.repository.UserRepository;
@@ -20,6 +23,7 @@ public class CommentService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final CommentLikeRepository commentLikeRepository;
 
 
     // 댓글 작성
@@ -67,5 +71,32 @@ public class CommentService {
            return  "댓글 삭제 권한이 없습니다.";
         }
 
+    }
+
+    //추가 요구사항 2번 : 댓글 좋아요 api
+    public String likeComment(UserDetailsImpl userDetails, Long commentNumber, CommentLikeRequestDto commentLikeRequestDto) {
+        Optional<Comment> findComment = commentRepository.findById(commentNumber);
+
+        Optional<CommentLike> byUserAndComment = commentLikeRepository.findByUserAndComment(userDetails.getUser(), findComment.get());
+        if(!byUserAndComment.isPresent()) {
+            CommentLike commentLike = new CommentLike(0);
+            commentLike.setUser(userDetails.getUser());
+            commentLike.setComment(findComment.get());
+            commentLikeRepository.save(commentLike);
+            return "좋아요";
+        } else {
+            CommentLike commentLike = byUserAndComment.get();
+            switch (commentLike.getLike()) {
+                case 0:
+                    commentLike.setLike(1);
+                    commentLikeRepository.save(commentLike);
+                    return "좋아요";
+                case 1:
+                    commentLike.setLike(0);
+                    commentLikeRepository.save(commentLike);
+                    return "취소";
+            }
+        }
+        return "해당 요청을 수행 할 수 없습니다.";
     }
 }

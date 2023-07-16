@@ -3,7 +3,7 @@ package com.hello.post.service;
 import com.hello.post.dto.PostRequestDto;
 import com.hello.post.dto.PostResponseDto;
 import com.hello.post.dto.post3.ResponseDto;
-import com.hello.post.dto.postlike.PostLikeRequestDto;
+import com.hello.post.dto.like.PostLikeRequestDto;
 import com.hello.post.entity.Post;
 import com.hello.post.entity.PostLike;
 import com.hello.post.entity.User;
@@ -12,7 +12,6 @@ import com.hello.post.repository.PostRepository;
 import com.hello.post.repository.UserRepository;
 import com.hello.post.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -108,18 +107,11 @@ public class PostService {
 
             postLike.setUser(userDetails.getUser());
 
-            Optional<Post> post = postRepository.findById(postNumber);
-            postLike.setPost(post.get());
-            switch (postLike.getLike()) {
-                case 0:
-                    postLike.setLike(1);
-                    postLikeRepository.save(postLike);
-                    return "좋아요";
-                case 1:
-                    postLike.setLike(0);
-                    postLikeRepository.save(postLike);
-                    return "싫어요.";
-            }
+            postLike.setPost(findPost.get());
+
+            postLikeRepository.save(postLike);
+            return "좋아요";
+
         } else {
             PostLike postLike = byUserAndPost.get();
             switch (postLike.getLike()) {
@@ -130,7 +122,7 @@ public class PostService {
                 case 1:
                     postLike.setLike(0);
                     postLikeRepository.save(postLike);
-                    return "싫어요.";
+                    return "취소";
             }
         }
 

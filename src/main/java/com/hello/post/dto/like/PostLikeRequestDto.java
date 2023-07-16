@@ -1,4 +1,4 @@
-package com.hello.post.dto.postlike;
+package com.hello.post.dto.like;
 
 import lombok.Getter;
 
@@ -6,6 +6,4 @@ import lombok.Getter;
 public class PostLikeRequestDto {
 
     private Integer like;
-
-
 }
