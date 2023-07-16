@@ -1,4 +1,4 @@
-package com.hello.post.dto;
+package com.hello.post.dto.post;
 
 import com.hello.post.entity.Post;
 import lombok.Getter;

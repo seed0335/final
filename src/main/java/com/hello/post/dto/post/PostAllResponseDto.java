@@ -1,4 +1,4 @@
-package com.hello.post.dto.post3;
+package com.hello.post.dto.post;
 
 import com.hello.post.entity.Comment;
 import com.hello.post.entity.Post;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-public class ResponseDto {
+public class PostAllResponseDto {
     private String username;
 
     private String title;
@@ -16,12 +16,14 @@ public class ResponseDto {
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+    private List<Comment> commentList;
 
-    public ResponseDto(Post post) {
+    public PostAllResponseDto(Post post) {
         this.username = post.getUser().getUsername();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
+        this.commentList = post.getCommentList();
     }
 }

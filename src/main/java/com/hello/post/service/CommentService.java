@@ -2,7 +2,6 @@ package com.hello.post.service;
 
 import com.hello.post.dto.comment.CommentRequestDto;
 import com.hello.post.dto.comment.CommentResponseDto;
-import com.hello.post.dto.like.CommentLikeRequestDto;
 import com.hello.post.entity.Comment;
 import com.hello.post.entity.CommentLike;
 import com.hello.post.entity.Post;
@@ -20,7 +19,6 @@ import java.util.Optional;
 @Service
 public class CommentService {
 
-    private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final CommentLikeRepository commentLikeRepository;
@@ -74,7 +72,7 @@ public class CommentService {
     }
 
     //추가 요구사항 2번 : 댓글 좋아요 api
-    public String likeComment(UserDetailsImpl userDetails, Long commentNumber, CommentLikeRequestDto commentLikeRequestDto) {
+    public String likeComment(UserDetailsImpl userDetails, Long commentNumber) {
         Optional<Comment> findComment = commentRepository.findById(commentNumber);
 
         Optional<CommentLike> byUserAndComment = commentLikeRepository.findByUserAndComment(userDetails.getUser(), findComment.get());

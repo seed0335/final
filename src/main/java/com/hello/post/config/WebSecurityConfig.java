@@ -68,20 +68,6 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
-        //로그인 사용
-        http.formLogin((formLogin) ->
-                formLogin
-                        //로그인 View 제공
-                        .loginPage("/post/user/login-page")
-                        //로그인 처리
-                        .loginProcessingUrl("/post/user/login")
-                        //로그인 처리 후 성공 시 URL
-                        .defaultSuccessUrl("/post/user/login/success")
-                        //로그인 처리 후 실패 시 URL
-                        .failureUrl("/post/user/login/fail")
-                        .permitAll()
-        );
-
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

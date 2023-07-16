@@ -1,9 +1,8 @@
 package com.hello.post.service;
 
-import com.hello.post.dto.PostRequestDto;
-import com.hello.post.dto.PostResponseDto;
-import com.hello.post.dto.post3.ResponseDto;
-import com.hello.post.dto.like.PostLikeRequestDto;
+import com.hello.post.dto.post.PostRequestDto;
+import com.hello.post.dto.post.PostResponseDto;
+import com.hello.post.dto.post.PostAllResponseDto;
 import com.hello.post.entity.Post;
 import com.hello.post.entity.PostLike;
 import com.hello.post.entity.User;
@@ -29,15 +28,15 @@ public class PostService {
     private final PostLikeRepository postLikeRepository;
 
     // 요구사항 3번 : 전체 게시글 목록 조회 API
-    public List<ResponseDto> findAllPost() {
+    public List<PostAllResponseDto> findAllPost() {
         List<Post> postList = postRepository.findAllByOrderByCreatedAtDesc();
-        List<ResponseDto> responseDtoList = new ArrayList<>();
+        List<PostAllResponseDto> postAllResponseDtoList = new ArrayList<>();
 
         for (Post post : postList) {
-            responseDtoList.add(new ResponseDto(post));
+            postAllResponseDtoList.add(new PostAllResponseDto(post));
         }
 
-        return responseDtoList;
+        return postAllResponseDtoList;
 
     }
 
@@ -58,24 +57,24 @@ public class PostService {
     }
 
     // 요구사항 5번 : 선택한 게시글 조회 API
-    public ResponseDto findByPost(Long postNumber) {
+    public PostAllResponseDto findByPost(Long postNumber) {
         Post post = postRepository.findById(postNumber).orElse(null);
 
-        ResponseDto responseDto = new ResponseDto(post);
-        return responseDto;
+        PostAllResponseDto postAllResponseDto = new PostAllResponseDto(post);
+        return postAllResponseDto;
     }
 
     //요구사항 6번 : 선택한 게시글 수정 API
-    public ResponseDto updatePost(UserDetailsImpl userDetails, Long postNumber, PostRequestDto postRequestDto) {
+    public PostAllResponseDto updatePost(UserDetailsImpl userDetails, Long postNumber, PostRequestDto postRequestDto) {
         String username = userDetails.getUser().getUsername();
         Post post = postRepository.findById(postNumber).orElse(null);
         String findPostUserName = post.getUser().getUsername();
 
-        if(username.equals(findPostUserName)) {
+        if (username.equals(findPostUserName)) {
             post.setTitle(postRequestDto.getTitle());
             post.setContent(postRequestDto.getContent());
             postRepository.save(post);
-            return new ResponseDto(post);
+            return new PostAllResponseDto(post);
         }
         return null;
     }
@@ -86,7 +85,7 @@ public class PostService {
         Post post = postRepository.findById(postNumber).orElse(null);
         String findPostUserName = post.getUser().getUsername();
 
-        if(username.equals(findPostUserName)) {
+        if (username.equals(findPostUserName)) {
             postRepository.delete(post);
             return "삭제가 완료 되었습니다.";
         }
@@ -94,45 +93,32 @@ public class PostService {
         return "삭제 권한이 없습니다.";
     }
 
-    // 추가 요구사항 : 게시글 좋아요 api
-    public String likePost(UserDetailsImpl userDetails, Long postNumber, PostLikeRequestDto postLikeRequestDto) {
+    // 추가 요구사항 1번 : 게시글 좋아요 api
+    public String likePost(UserDetailsImpl userDetails, Long postNumber) {
         // 로그인회원이면서, 게시글에 좋아요가 없으면 생성
         // 로그인회원이면서, 게시글에 좋아요가 있으면 생성 값이 변경
 
         Optional<Post> findPost = postRepository.findById(postNumber);
-
-        Optional<PostLike> byUserAndPost = postLikeRepository.findByUserAndPost(userDetails.getUser(), findPost.get());
-        if(!byUserAndPost.isPresent()) {
+        Optional<PostLike> findByUserAndPost = postLikeRepository.findByUserAndPost(userDetails.getUser(), findPost.get());
+        if (!findByUserAndPost.isPresent()) {
             PostLike postLike = new PostLike(0);
-
             postLike.setUser(userDetails.getUser());
-
             postLike.setPost(findPost.get());
-
             postLikeRepository.save(postLike);
-            return "좋아요";
-
+            return "좋아요 요청 성공";
         } else {
-            PostLike postLike = byUserAndPost.get();
-            switch (postLike.getLike()) {
+            PostLike postLike = findByUserAndPost.get();
+            switch (findByUserAndPost.get().getLike()) {
                 case 0:
                     postLike.setLike(1);
                     postLikeRepository.save(postLike);
-                    return "좋아요";
+                    return "좋아요 요청 성공";
                 case 1:
                     postLike.setLike(0);
                     postLikeRepository.save(postLike);
-                    return "취소";
+                    return "취소 요청 성공";
             }
         }
-
-
-
         return "해당 요청을 수행 할 수 없습니다.";
     }
-
-
-
-
-
 }

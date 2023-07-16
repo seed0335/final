@@ -2,8 +2,7 @@ package com.hello.post.controller;
 
 import com.hello.post.dto.comment.CommentRequestDto;
 import com.hello.post.dto.comment.CommentResponseDto;
-import com.hello.post.dto.like.CommentLikeRequestDto;
-import com.hello.post.dto.like.PostLikeRequestDto;
+
 import com.hello.post.security.UserDetailsImpl;
 import com.hello.post.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -54,8 +53,8 @@ public class CommentController {
 
     //추가 요구사항 2번 : 댓글 좋아요 api
     @PostMapping("/{commentNumber}/likeComment")
-    public ResponseEntity<String> likeComment(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long commentNumber, CommentLikeRequestDto commentLikeRequestDto) {
-        String message = commentService.likeComment(userDetails, commentNumber, commentLikeRequestDto);
+    public ResponseEntity<String> likeComment(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long commentNumber) {
+        String message = commentService.likeComment(userDetails, commentNumber);
         return new ResponseEntity<>(message,HttpStatus.OK);
     }
 }
