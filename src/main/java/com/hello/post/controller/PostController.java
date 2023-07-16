@@ -3,6 +3,8 @@ package com.hello.post.controller;
 import com.hello.post.dto.PostRequestDto;
 import com.hello.post.dto.PostResponseDto;
 import com.hello.post.dto.post3.ResponseDto;
+import com.hello.post.dto.postlike.PostLikeRequestDto;
+import com.hello.post.entity.PostLike;
 import com.hello.post.entity.User;
 import com.hello.post.security.UserDetailsImpl;
 import com.hello.post.service.PostService;
@@ -69,4 +71,12 @@ public class PostController {
         String message = postService.deletePost(userDetails, postNumber);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    // 추가 요구사항 1번: 게시글 좋아요 api
+    @PostMapping("/{postNumber}/likePost")
+    public ResponseEntity<String> LikePost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postNumber, PostLikeRequestDto postLikeRequestDto) {
+        String message = postService.likePost(userDetails, postNumber, postLikeRequestDto);
+        return new ResponseEntity<>(message,HttpStatus.OK);
+    }
+
 }

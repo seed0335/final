@@ -8,8 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "likes")
-public class Like {
+@Table(name = "PostLikes")
+public class PostLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +27,10 @@ public class Like {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    public Like() {
+    public PostLike() {
+    }
+
+    public PostLike(Integer like) {
+        this.like = like;
     }
 }
