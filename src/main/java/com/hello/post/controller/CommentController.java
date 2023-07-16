@@ -20,6 +20,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
+    // 댓글 작성
     @PostMapping("/{postNumber}")
     public ResponseEntity<CommentResponseDto> createComment(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postNumber, @RequestBody CommentRequestDto commentRequestDto) {
 
@@ -30,13 +31,23 @@ public class CommentController {
         return new ResponseEntity<>(createComment, HttpStatus.OK);
     }
 
-//    @PatchMapping("/{postNumber}")
-//    public ResponseEntity<CommentResponseDto> updateComment(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postNumber, @RequestBody CommentRequestDto commentRequestDto) {
-//
-//        CommentResponseDto createComment = commentService.updateComment(userDetails, postNumber, commentRequestDto);
-//        if(createComment == null) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        return new ResponseEntity<>(createComment, HttpStatus.OK);
-//    }
+    // 댓글 수정
+    @PatchMapping("/{commentNumber}")
+    public ResponseEntity<CommentResponseDto> updateComment(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long commentNumber,@RequestBody CommentRequestDto commentRequestDto) {
+
+        CommentResponseDto updateComment = commentService.updateComment(userDetails, commentNumber,commentRequestDto);
+        if(updateComment == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(updateComment, HttpStatus.OK);
+    }
+
+    //댓글 삭제comment
+    @DeleteMapping("/{commentNumber}")
+    public ResponseEntity<String> DeleteComment(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long commentNumber) {
+
+        String message = commentService.DeleteComment(userDetails, commentNumber);
+
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }
