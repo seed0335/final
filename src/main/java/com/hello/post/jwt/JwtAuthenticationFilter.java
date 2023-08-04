@@ -38,10 +38,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                             null
                     )
             );
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new RuntimeException(e.getMessage());
+        } catch (IOException e){
+            e.printStackTrace();
         }
+        return null;
     }
 
     @Override
@@ -56,6 +56,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         log.info("로그인 실패");
-        response.setStatus(401);
+        response.sendError(401, "닉네임 또는 패스워드를 확인해주세요.");
     }
 }

@@ -30,24 +30,23 @@ public class UserController {
 
         if(bindingResult.hasErrors()) {
             log.info("bindingResult={}", bindingResult);
-            return new ResponseEntity<>("회원가입 형식에 맞지 않습니다.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("회원가입 형식에 맞지 않습니다.",HttpStatus.NOT_ACCEPTABLE);
         }
 
         try {
             userService.signup(signupDto);
         } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("중복된 아이디입니다.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
 
         }
 
         return new ResponseEntity<>("회원가입 성공", HttpStatus.OK);
     }
 
-    @GetMapping("/login-page")
-    public String login() {
-        return "login";
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity<String> login() {
+//        return "login";
+//    }
 
     @ResponseBody
     @GetMapping("login/success")

@@ -13,7 +13,7 @@ import lombok.ToString;
 public class SignupDto {
 
     @NotBlank
-    @Size(min=4, max=8)
+    @Size(min=3, max=15)
     @Pattern(regexp = "^[A-Za-z0-9]+$")
     private String username;
 
@@ -21,5 +21,11 @@ public class SignupDto {
     @Size(min=8, max=15)
     @Pattern(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+$")
     private String password;
+
+    //비밀번호 확인
+    @NotBlank
+    @Size(min=4, max=15)
+    @Pattern(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+$")
+    private String passwordCheck;
 
 }
