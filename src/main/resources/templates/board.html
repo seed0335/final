@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<head th:replace="~{fragment/head :: userHead ('게시판')}">
+
+
+</head>
+
+<body>
+<div class="container">
+    <div th:insert="~{fragment/nav :: useNav}">insert</div>
+
+
+    <div class="main">
+
+        <tr th:each="post : ${allPost}">
+            <td th:text="${post.getTitle()}"></td><br>
+            <td th:text="${post.getContent()}"></td><br><br>
+        </tr>
+
+    </div>
+
+    <!--    <div th:replace="~{fragment/footer :: usefooter}">insert</div>-->
+
+</div>
+</body>
+</html>
