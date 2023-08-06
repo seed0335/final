@@ -26,6 +26,6 @@ public class SignupDto {
     @NotBlank
     @Size(min=4, max=15)
     @Pattern(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+$")
-    private String passwordCheck;
+    private String checkPassword;
 
 }

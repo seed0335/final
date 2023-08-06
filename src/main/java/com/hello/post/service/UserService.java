@@ -21,7 +21,7 @@ public class UserService {
     public void signup(SignupDto signupDto) {
         String username = signupDto.getUsername();
         String password = signupDto.getPassword();
-        String passwordCheck = signupDto.getPasswordCheck();
+        String passwordCheck = signupDto.getCheckPassword();
 
         //닉네임과 같은 값이 비밀번호에 포함된 경우 회원가입 실패
         boolean usernameCheck = password.contains(username);

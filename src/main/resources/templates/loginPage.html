@@ -9,10 +9,9 @@
 <div class="container">
     <div th:insert="~{fragment/nav :: useNav}">insert</div>
 
-
     <div class="main">
         <h3>로그인</h3>
-        <form action="/action_page.php" method="post">
+        <form action="/user/login" method="post">
 
             <input type="text" id="username" name="username" placeholder="아이디"><br>
 
@@ -20,7 +19,7 @@
 
             <input type="submit" class="submit" value="로그인"><br>
         </form>
-        <button><a th:href="@{/user/signUp}">회원가입</a></button>
+        <button><a th:href="@{/user/signUpPage}">회원가입</a></button>
     </div>
 
     <!--    <div th:replace="~{fragment/footer :: usefooter}">insert</div>-->
